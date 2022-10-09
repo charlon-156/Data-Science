@@ -11,7 +11,7 @@ Não se trata apenas de armazenar dados e mais dados, e sim num trabalho dedicad
 ## História 
 Foi durante o periodo pós meados do século XX da história nas quais as empresas verificaram que era necessário empregar muitas pessoas, além do alto custo para fazer trabalhos, tais como: armazenar e organizar seus arquivos. Por este motivo, eram importantes os esforços e investimentos em pesquisa para obter-se um meio mais barato e eficiente de armazenamento de dados.
 
-Em 1970 a IBM publicou o primeiro trabalho sobre bancos de dados relacionais. Este trabalho tratava sobre o uso de cálculo e álgebra relacional para que usuários não técnicos pudessem manipular grande quantidade de informações.
+Em 1970 a IBM publicou o primeiro trabalho sobre bancos de dados relacionais. Este trabalho tratava sobre o uso de cálculo e álgebra relacional para que usuários não técnicos pudessem manipular grande quantidade de informações. Dessa forma, banco de dados são importantes para substituir o armazenamento de dados em papéis ou até mesmo na mémoria.
 
 # Modelagem
 
@@ -19,7 +19,7 @@ Antes de cair de cara nos códigos, veremos um pouco sobre a termologia da ciên
 
 ## Abstração 
 
-Para que o sistema funcione perfeitamente, precisa-se que dados sejam recuperados de maneira eficiente. Para atingir essa eficiência os [projetistas de Banco de Dados](#usuários) vem a um bom tempo usando estruturas complexas de dados,tudo isso para o planejamento e a analise de sistemas de dados. Eu já escrevi um pouco sobre modelagem de dados em meu outro repositório. Leia o meu documento sobre aqui em: [Modelagem](https://github.com/charlon-156/MySQL/blob/main/Modelagem.md)
+Para que o sistema funcione perfeitamente, precisa-se que dados sejam recuperados de maneira eficiente. Para atingir essa eficiência os [projetistas de Banco de Dados](#usuários) vem a um bom tempo usando estruturas complexas de dados,tudo isso para o planejamento e a analise de sistemas de dados — deve-se produzir diagramas e modelos conceituais e lógicos para se construir os bancos de dados, pois não se pode cair diretamente nos comandos. É preciso primeiramente esquematizar a base de dados. Eu já escrevi um pouco sobre modelagem de dados em meu outro repositório. Leia o meu documento sobre aqui em: [Modelagem](https://github.com/charlon-156/MySQL/blob/main/Modelagem.md)
 
 ## Instância e esquemas
 
@@ -27,7 +27,7 @@ O banco de dados mudam constantemente, isso ocorre a medida em que as informaç�
 
 # Linguagem de banco de dados
 
-Agora brota a duvida, qual é a linguagem de programação de um banco? Bem, não existe isso, existe na verdade o que chamamos de **SQL** - *Structured Query Language*. Traduzindo ao pé da letra: Linguagem de Consulta Estruturada. Nela existem diversos comando; criar banco, inserir dados e etc. são exemplos de comandos SQL, se você já viu o básico de Banco de Dados, vá estudar os comandos, para isso veja meu documento APENAS com comandos de SQL no SGBD chamado MySQL, clique aqui -> [Comandos SQL](https://github.com/charlon-156/MySQL/blob/main/Commands.md)
+Agora brota a duvida, qual é a linguagem de programação de um banco? Bem, isso não existe, existe na verdade o que chamamos de **SQL** - *Structured Query Language*. Traduzindo ao pé da letra: Linguagem de Consulta Estruturada. Nela existem diversos comando; criar banco, inserir dados e etc. são exemplos de comandos SQL, se você já viu o básico de Banco de Dados, vá estudar os comandos, para isso veja meu documento APENAS com comandos de SQL no SGBD chamado MySQL, clique aqui -> [Comandos SQL](https://github.com/charlon-156/MySQL/blob/main/Commands.md)
 
 ## Usuários 
 O banco de dados vai possuir diferentes atores, pessoas que vão participar do banco, mas cada um de forma diferente, veja os 4 principais agora:
@@ -38,10 +38,41 @@ O banco de dados vai possuir diferentes atores, pessoas que vão participar do b
 - **Analistas de sistemas e programadores de aplicações**: os analistas determinam os requisitos dos usuários finais e desenvolvem especificações para transações que atendam estes requisitos, e os programadores implementam estas especificações.
 
 # SGBD 
-O controlador do Banco de Dados são os famosos SGBDs, destrinchando fica *Sistema de Gerenciamento de Banco de Dados*. O SGBD é responsável por basicamente e simplesmente... TUDO. Fornecer uma interface, encriptar dados, controlar o acesso a informações, fazer e armazenar Backups, garantir transações de informações seguras e que garanta a proteção e evitar anomalias estruturais e de informações. 
-O mais famosos SGBDs são:
+O controlador do Banco de Dados são os famosos SGBDs, destrinchando fica *Sistema de Gerenciamento de Banco de Dados*. O SGBD é responsável por basicamente e simplesmente... TUDO. Fornecer uma interface, encriptar dados, controlar o acesso a informações, fazer e armazenar Backups, garantir transações de informações seguras e que garanta a proteção e evitar anomalias estruturais e de informações. O mais famosos SGBDs são:
 - Mysql
 - MariaDB
 - SQL Server
 - SQLite3
 
+# Normalização de Dados
+Quando falaremos do Modelo Entidade Relacionamento (MER), considerando outro ponto de vista. Anteriormente, era apresentado o contexto em que tinha-se a ideia de modelar o banco e eram definidas as entidades, relacionamentos e atributos de forma bastante subjetiva. Para isso surgiu as Formas Normais, o que é as Formas Normais?? É um conjunto de regras cujo propósito é auxiliar na simplificação das estruturas de dados mais complexas – reduzindo as chances de anomalias.
+
+Para atingir os objetivos, podemos dizer que um banco de dados está relacionado a alguns conceitos fundamentais:
+- Banco de Dados = Coleção de Arquivos;
+- Arquivos = Coleção de Registros;
+- Registro = Coleção de Campos (Tuplas);
+- Campo = Coleção de Caracteres;
+- Caractere = Alfa-numéricos ou símbolos. 
+
+## 1 Forma Normal - 1FN
+Existem situações em que nos deparamos com algumas informações que se repetem (atributo multivalorado) dentro de uma única linha, ligada a uma chave primária. A 1FN diz que cada ocorrência da chave primária deve corresponder a somente uma informação de cada atributo, ou seja, a entidade não deve conter atributos repetidos ou multivalorados, ou, ainda, os atributos não-chave deverão ser atômicos (únicos).
+
+Ao observarmos que certo grupo de atributos não-chave não são atômicos, ao longo do processo de entrada de dados, verificamos que este atributo deverá ser **decomposto em uma nova entidade**.
+
+Veja essa tabela, ela não está no 1FN: Endereço está composto e telefone multivalorado
+| **Id_Pessoa** | **Nome** |      **Endereço**     |       **Telefones**      |
+|---------------|:--------:|:---------------------:|:------------------------:|
+| 1             |   Chico  |  Av. Carlos, Caicó-RN | 9-9324-5678, 9-9988-7533 |
+| 2             |   Anna   | Rua Trio, Campinas-PB |        9-8863-2170       |
+
+Para deixa-la na primeira 1FN deve-se destrinchar todos os dados do endereço
+| **Id_Pessoa** | **Nome** |   **Rua**  | **Cidade** | **UF** |
+|:-------------:|:--------:|:----------:|:----------:|:------:|
+|       1       |   Chico  | Av. Carlos |    Caicó   |   RN   |
+|       2       |   Anna   |  Rua Trio  |  Campinas  |   PB   |
+Sobre os números deve fazer uma nova tabela de atributo composto
+| **Id_Pessoa** | **Telefone** |
+|:-------------:|:------------:|
+|       1       |  9-9988-7533 |
+|       1       |  9-9324-5678 |
+|       2       |  9-8863-2170 |
