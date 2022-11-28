@@ -54,7 +54,7 @@ Para atingir os objetivos, podemos dizer que um banco de dados está relacionado
 - Campo = Coleção de Caracteres;
 - Caractere = Alfa-numéricos ou símbolos. 
 
-## 1 Forma Normal - 1FN
+## 1ª Forma Normal - 1FN
 Existem situações em que nos deparamos com algumas informações que se repetem (atributo multivalorado) dentro de uma única linha, ligada a uma chave primária. A 1FN diz que cada ocorrência da chave primária deve corresponder a somente uma informação de cada atributo, ou seja, a entidade não deve conter atributos repetidos ou multivalorados, ou, ainda, os atributos não-chave deverão ser atômicos (únicos).
 
 Ao observarmos que certo grupo de atributos não-chave não são atômicos, ao longo do processo de entrada de dados, verificamos que este atributo deverá ser **decomposto em uma nova entidade**.
@@ -70,9 +70,33 @@ Para deixa-la na primeira 1FN deve-se destrinchar todos os dados do endereço
 |:-------------:|:--------:|:----------:|:----------:|:------:|
 |       1       |   Chico  | Av. Carlos |    Caicó   |   RN   |
 |       2       |   Anna   |  Rua Trio  |  Campinas  |   PB   |
+
 Sobre os números deve fazer uma nova tabela de atributo composto
 | **Id_Pessoa** | **Telefone** |
 |:-------------:|:------------:|
 |       1       |  9-9988-7533 |
 |       1       |  9-9324-5678 |
 |       2       |  9-8863-2170 |
+
+## 2ª Forma Normal - 2FN
+
+Pronto, os atributos multivalorados e redundantes foram destrinchados. Porém, ainda há redundâncias que podem ser corrigidas para melhorar o desempenho do SGBD. Segundo a segunda forma Normal, **Na tabela só pode haver atributos que dependem apenas da chave primária**. Por exemplo, dentro da tabela aluno: eu tenho o atributo, nome do professor, código da sala, nome do aluno e data de nascimento do aluno. Apenas esses dois ultimos atributos estam na segunda forma normal. Veja, essa tabela asseguir:
+
+| **alu_codigo** | **alu_nome** | **alu_professor** | **alu_turma** | **alu_dataNascimento** |
+|:--------------:|:------------:|:-----------------:|:-------------:|:----------------------:|
+|        1       |    Charlon   |       Diego       |       1       |       2004-11-11       |
+|        2       |    Beatrix   |        Iuri       |       2       |       2004-10-08       |
+|        3       |    Augusto   |        Iuri       |       2       |       2005-01-02       |
+
+Para corrigir, cada atributo deve movido até a tabela em que ele dependa apenas da chave primária, por exemplo, o atributo professor deve ser levado para a tabela professores, onde aquele nome, estará apenas relacionado a um unico nome. Pois no caso anterior, o mesmo professor estava duplicado na tabela, logo, causando redundância de dados.
+
+## 3ª Forma Normal - 3FN
+
+para estar na 3FN, é preciso estar na 2FN. Além disso, os atributos não chave de uma tabela devem ser mutuamente independentes e dependentes unicamente e exclusivamente da chave primária (um atributo B é funcionalmente dependente de A se, e somente se, para cada valor de A só existe um valor de B). Para atingir essa forma normal, é preciso identificar as colunas que são funcionalmente dependentes das outras colunas não chave e extraí-las para outra tabela. Considere, como exemplo, a tabela FUNCIONARIOS a seguir.
+
+FUNCIONARIOS = { ID + NOME + ID_CARGO + DESCRICAO_CARGO }
+
+O atributo DESCRICAO_CARGO depende exclusivamente de ID_CARGO (atributo não chave) e, portanto, deve-se criar uma nova tabela com esses atributos. Dessa forma, ficamos com as seguintes tabelas:
+
+FUNCIONARIOS = { ID + NOME + ID_CARGO }
+CARGOS = { ID_CARGO + DESCRICAO }
